@@ -24,6 +24,21 @@ class HousesService {
         const newHouse = new House(res.data)
         AppState.activeHouse = newHouse
     }
+    async destroyHouse(houseId) {
+        const res = await api.delete(`api/houses/${houseId}`)
+        logger.log(res.data)
+        this.clearData()
+
+    }
+    async editHouse(houseData) {
+        const res = await api.put(`api/houses/${houseData.id}`, houseData)
+        logger.log('editing a house!', res.data)
+        const newHouse = new House(res.data)
+        AppState.activeHouse = newHouse
+    }
+    clearData() {
+        AppState.activeHouse = null
+    }
 }
 
 export const housesService = new HousesService()

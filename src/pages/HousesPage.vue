@@ -38,6 +38,7 @@ export default {
             }
         }
         onMounted(() => {
+            housesService.clearData()
             getHouses();
         });
         return {

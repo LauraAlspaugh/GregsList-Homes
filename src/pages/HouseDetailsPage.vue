@@ -11,12 +11,12 @@
             </div>
             <div class="col-7">
                 <h2>{{ house.year }} {{ house.name }}</h2>
-                <h3>{{ house.bedrooms }} {{ house.bathrooms }} {{ house.levels }}</h3>
-                <h3>{{ house.price }}</h3>
+                <h3>Bedrooms: {{ house.bedrooms }} Bathrooms: {{ house.bathrooms }} Levels: {{ house.levels }}</h3>
+                <h3>${{ house.price }}</h3>
                 <h4>{{ house.description }}</h4>
                 <img :src="house.creator.picture" :alt="house.creator.name" class="creator">
                 <h3>Listed By: {{ house.creator.name }}</h3>
-                <button class="btn btn-danger text-center">Delete Car</button>
+                <button @click="destroyHouse()" class="btn btn-danger text-center">Delete House</button>
             </div>
         </section>
     </div>
@@ -36,7 +36,7 @@ import { logger } from '../utils/Logger.js';
 export default {
     setup() {
         const route = useRoute();
-        // const router = useRouter();
+        const router = useRouter();
         async function getHouseById() {
             try {
                 const houseId = route.params.houseId;
@@ -47,12 +47,26 @@ export default {
             }
         }
         onMounted(() => {
-            logger.log(route.params.carId);
+            logger.log(route.params.houseId);
             getHouseById();
         });
         return {
             house: computed(() => AppState.activeHouse),
             account: computed(() => AppState.account),
+            async destroyHouse() {
+                try {
+                    const wantsToDelete = await Pop.confirm('Are you sure you want to delete this house? ')
+                    if (!wantsToDelete) {
+                        return
+                    }
+                    const houseId = route.params.houseId;
+                    await housesService.destroyHouse(houseId);
+                    router.push({ name: 'Houses' });
+                } catch (error) {
+                    logger.error(error)
+
+                }
+            }
         };
     },
     components: { HouseFormModelComponent }

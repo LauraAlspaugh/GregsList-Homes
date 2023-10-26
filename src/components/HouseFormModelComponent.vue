@@ -99,6 +99,15 @@ export default {
                     logger.error(error)
 
                 }
+            },
+            async editHouse() {
+                try {
+                    const houseData = editable.value
+                    await housesService.editHouse(houseData)
+                    Modal.getOrCreateInstance('#houseFormModal').hide()
+                } catch (error) {
+                    logger.error(error)
+                }
             }
         }
     }
