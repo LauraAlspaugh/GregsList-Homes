@@ -2,8 +2,8 @@
     <div class="houses">
         <h1 class="text-center p-4">Browse Houses Today!</h1>
         <div class="col-12 text-center">
-            <button class="btn fs-1 ms-3 text-center" type="button" title="Open House Form" data-bs-toggle="modal"
-                data-bs-target="#houseFormModal">
+            <button v-if="account.id" class="btn fs-1 ms-3 text-center" type="button" title="Open House Form"
+                data-bs-toggle="modal" data-bs-target="#houseFormModal">
                 🏠
             </button>
         </div>
@@ -42,7 +42,8 @@ export default {
             getHouses();
         });
         return {
-            houses: computed(() => AppState.houses)
+            houses: computed(() => AppState.houses),
+            account: computed(() => AppState.account)
         };
     },
     components: { HouseCardComponent, HouseFormModelComponent }

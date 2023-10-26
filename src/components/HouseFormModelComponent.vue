@@ -3,7 +3,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Create House</h1>
+                    <h1 v-if="!editable.id" class="modal-title fs-5" id="exampleModalToggleLabel">Create House</h1>
+                    <h1 v-else class="modal-title fs-5" id="exampleModalLabel">Edit House</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -68,10 +69,11 @@
 
 
 <script>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { logger } from '../utils/Logger.js';
 import { housesService } from '../services/HousesService.js';
 import { Modal } from 'bootstrap';
+import { AppState } from '../AppState.js';
 
 
 export default {
@@ -79,6 +81,16 @@ export default {
 
     setup() {
         const editable = ref({})
+        watchEffect(() => {
+            if (AppState.activeHouse) {
+                editable.value = { ...AppState.activeHouse }
+                logger.log('WATCH')
+            }
+            else {
+                editable.value = {}
+
+            }
+        })
         return {
             editable,
             handleSubmit() {

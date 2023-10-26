@@ -16,7 +16,12 @@
                 <h4>{{ house.description }}</h4>
                 <img :src="house.creator.picture" :alt="house.creator.name" class="creator">
                 <h3>Listed By: {{ house.creator.name }}</h3>
-                <button @click="destroyHouse()" class="btn btn-danger text-center">Delete House</button>
+                <div v-if="house.creatorId == account.id">
+                    <button @click="destroyHouse()" class="btn btn-danger text-center">Delete House</button>
+                    <button data-bs-toggle="modal" data-bs-target="#houseFormModal"
+                        class="btn btn-info text-center ms-2">Edit
+                        House</button>
+                </div>
             </div>
         </section>
     </div>
@@ -48,6 +53,7 @@ export default {
         }
         onMounted(() => {
             logger.log(route.params.houseId);
+            housesService.clearData();
             getHouseById();
         });
         return {

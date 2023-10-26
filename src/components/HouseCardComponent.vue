@@ -5,8 +5,8 @@
                 <img class="img-fluid rounded-start" :src="houseProp.imgUrl" :alt="houseProp.year">
             </div>
             <div class="col-8 p-5">
-                <h2>{{ houseProp.name }}</h2>
-                <h3>{{ houseProp.price }}</h3>
+                <h2> {{ houseProp.year }} {{ houseProp.name }}</h2>
+                <h3>${{ houseProp.price }}</h3>
             </div>
         </section>
     </router-link>
